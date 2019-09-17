@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
-const Login =()=>{
+const Login =(props)=>{
     const [state, setState] = useState({ username: "", password: ""});
     // initialState = {
     //     credentials: {
@@ -10,23 +10,22 @@ const Login =()=>{
     //     }
     // };
 
-    handleChange = e => {
-        setState({
-            credentials:
+   const handleChange = e => {
+        setState(
             {...state.credentials,
             [e.target.name]: e.target.value}
-        });
-    }//closing handleChange
+        );
+    };//closing handleChange
 
-    login = e => {
+  const login = e => {
         e.preventDefault();
         //note from GP: // axiosWithAuth ==> ?? an axios instance; .post() ==> ?? promise
         axiosWithAuth()
         .post("/login", state.credentials)
         .then(res=>{
-            console.log(res);
+            console.log(res, "this is from login page");
             localStorage.setItem("token", res.data.payload); //this could be wrong, can't see console log
-            this.PaymentResponse.history.push("protected");
+            props.history.push("/protected");
         })
         .catch(error => console.log("error", error));
        
@@ -38,13 +37,13 @@ const Login =()=>{
             <input
             type="text"
             name="username"
-            value={state.credentials.username}
+            value={state.username}
             onChange={handleChange}
             />
             <input
             type="text"
             name="password"
-            value={state.credentials.password}
+            value={state.password}
             onChange={handleChange}
             />
             <button>Log In!</button>
