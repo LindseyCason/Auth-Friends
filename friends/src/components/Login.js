@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const Login =(props)=>{
-    const [state, setState] = useState({ username: "", password: ""});
-    // initialState = {
-    //     credentials: {
-    //         username: "",
-    //         password: ""
-    //     }
-    // };
+    const [state, setState] = useState({username: '', password: ''});
+    //this can only go one level deep in func components. Do not use --> useState({credentials: {username: "", password: ""}})
+ 
 
    const handleChange = e => {
         setState(
-            {...state.credentials,
+            {...state, //just the state spreading here
             [e.target.name]: e.target.value}
         );
     };//closing handleChange
@@ -21,9 +17,8 @@ const Login =(props)=>{
         e.preventDefault();
         //note from GP: // axiosWithAuth ==> ?? an axios instance; .post() ==> ?? promise
         axiosWithAuth()
-        .post("/login", state.credentials)
+        .post("/login", state)
         .then(res=>{
-            console.log(res, "this is from login page");
             localStorage.setItem("token", res.data.payload); //this could be wrong, can't see console log
             props.history.push("/protected");
         })
