@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { AddFriendForm } from "./AddFriendForm"
 
 import { axiosWithAuth } from "../utils/axiosWithAuth"
 
-const FriendsList = () => {
+export const FriendsList = () => {
     const [friends, setFriends] = useState({
         friends: []
     })
@@ -11,7 +12,7 @@ const FriendsList = () => {
         axiosWithAuth()
         .get("/friends")
         .then(res =>{
-            console.log(res)
+            console.log("res from Friends list UseEffect", res)
             setFriends({
                 friends: res.data //this could be wrong, check console log
             })
@@ -19,6 +20,13 @@ const FriendsList = () => {
         .catch(error => console.log("error in friendslist", error))
 
     },[]) //closes useEffect, //might need to check dependency array
+
+
+/////
+
+
+/////
+
 
     return(
         <div>
@@ -32,6 +40,8 @@ const FriendsList = () => {
                     </>
                 )
             })}
+
+<AddFriendForm />
         </div>
     )
 
